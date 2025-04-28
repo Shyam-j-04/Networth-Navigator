@@ -1,0 +1,75 @@
+/* Center the login/register form */
+.auth-container {
+    display: flex;
+    justify-content: center;  /* Center horizontally */
+    align-items: center;      /* Center vertically */
+    height: 100vh;
+    width: 100vw; /* Make sure it spans the full viewport width */
+    background-color: #f4f4f4; /* Light grey background */
+  }
+  
+  /* Styling the form card */
+  .auth-card {
+    color: #000;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+  }
+  
+  /* Form elements */
+  .auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Input field styling */
+  .auth-card input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Error message */
+  .error {
+    color: red;
+    font-size: 14px;
+  }
+  
+  /* Submit button */
+  .auth-card button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .auth-card button:hover {
+    background-color: #0056b3;
+  }
+  
+  .reg-input-group {
+    text-align: left;
+    margin-bottom: 15px;
+  }
+  
+  .reg-input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .reg-input-group input {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: gainsboro;
+  }
