@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#00c49f"];
 
 const TrackNetWorth = () => {
   const [assets, setAssets] = useState({});
@@ -7,43 +10,45 @@ const TrackNetWorth = () => {
   const [error, setError] = useState("");
   const [netWorth, setNetWorth] = useState(0);
 
+  const getChartData = () => [
+    { name: "Stocks", value: assets.stockValue || 0 },
+    { name: "Crypto", value: assets.cryptoValue || 0 },
+    { name: "Mutual Funds", value: assets.mutualFundValue || 0 },
+    { name: "Gold", value: assets.goldValue || 0 },
+    { name: "FDs", value: assets.fdValue || 0 },
+  ];
+
   useEffect(() => {
     const fetchNetWorth = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
           setError("User not authenticated!");
-          console.log("No token found");
           return;
         }
 
-        console.log("🔄 Triggering price update...");
-        await axios.get(
-          "http://localhost:5000/api/portfolio",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-    
-        console.log("Sending request with token:", token);  // Log the token being sent
+        await axios.get("http://localhost:5000/api/portfolio", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
         const response = await axios.get("http://localhost:5000/api/portfolio/summary", {
           headers: { Authorization: `Bearer ${token}` },
         });
-    
-        console.log("Response received:", response); // Log the full response
-    
+
         setNetWorth(response.data.totalNetWorth);
-        setAssets(response.data); // Store all asset details
+        setAssets(response.data);
       } catch (err) {
         setError("Failed to fetch net worth data!");
-        console.error("Error during request:", err);  // Log the error
       } finally {
         setLoading(false);
       }
     };
-    
 
     fetchNetWorth();
+
+    // Commented to avoid API limit exhaustion
+    // const intervalId = setInterval(fetchNetWorth, 10000);
+    // return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -68,12 +73,36 @@ const TrackNetWorth = () => {
               <p>🏅 Gold: ₹{assets.goldValue?.toLocaleString()}</p>
               <p>🏦 Fixed Deposits: ₹{assets.fdValue?.toLocaleString()}</p>
             </div>
+
+            <h3 style={{ marginTop: "30px" }}>🧩 Asset Allocation</h3>
+            <div style={{ width: "100%", height: 350, paddingTop: 10 }}>
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie
+                    data={getChartData()}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    label
+                  >
+                    {getChartData().map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </>
         )}
       </div>
     </div>
   );
 };
+
 
 const styles = {
   page: {
