@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./ViewPortfolio.css"
+import "./ViewPortfolio.css";
+
+// Helper function to format asset name
+const formatAssetName = (name) => {
+  const formattedName = name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([a-zA-Z])(\d)/g, '$1 $2').replace(/([0-9])([a-zA-Z])/g, '$1 $2');
+  return formattedName
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
 
 const ViewPortfolio = () => {
   const navigate = useNavigate();
@@ -52,121 +61,89 @@ const ViewPortfolio = () => {
     }
   };
 
-  return (
-    <div className="view-portfolio-container">
-  <h2 className="view-portfolio-heading">📊 My Portfolio</h2>
-
-  {loading && <p>Loading portfolio...</p>}
-  {error && <p className="view-portfolio-error">{error}</p>}
-
-  {!loading && portfolio.length === 0 && <p className="view-portfolio-no-data">No assets found. Add some!</p>}
-
-  <div className="view-portfolio-table-container">
-    <table className="view-portfolio-table">
-      <thead>
-        <tr>
-          <th>Asset Type</th>
-          <th>Name</th>
-          <th>Quantity</th>
-          <th>Buy Price</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {portfolio.length > 0 ? (
-          portfolio.map((asset) => (
-            <tr key={asset._id}>
-              <td>{asset.assetType}</td>
-              <td>{asset.name}</td>
-              <td>{asset.quantity || "-"}</td>
-              <td>{asset.buyPrice || "-"}</td>
-              <td>
-                <button
-                  onClick={() => navigate(`/update-asset/${asset._id}`)}
-                  className="view-portfolio-edit-button"
-                >
-                  ✏️ Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(asset._id)}
-                  className="view-portfolio-delete-button"
-                >
-                  🗑️ Delete
-                </button>
-              </td>
-            </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan="5" className="view-portfolio-no-data">
-              No assets found. Add some!
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
-  </div>
-
-  <button onClick={() => navigate("/add-asset")} className="view-portfolio-add-button">
-    ➕ Add New Asset
-  </button>
-</div>
-
-  );
+// Helper function to display quantity and buyPrice for Fixed Deposit
+const formatFixedDeposit = (asset) => {
+  if (asset.assetType.toLowerCase() === "fixed_deposit") {
+    // Use principalAmount as the buyPrice for fixed deposits
+    return { quantity: 1, buyPrice: asset.principalAmount || "Principle" };
+  }
+  return { quantity: asset.quantity || "-", buyPrice: asset.buyPrice || "-" };
 };
 
-// const styles = {
-//   container: {
-//     maxWidth: "900px",
-//     margin: "auto",
-//     padding: "20px",
-//     textAlign: "center",
-//   },
-//   heading: {
-//     fontSize: "1.8rem",
-//     marginBottom: "20px",
-//   },
-//   error: {
-//     color: "red",
-//     fontSize: "1rem",
-//   },
-//   tableContainer: {
-//     overflowX: "auto",
-//   },
-//   table: {
-//     width: "100%",
-//     borderCollapse: "collapse",
-//     marginTop: "10px",
-//   },
-//   addButton: {
-//     marginTop: "15px",
-//     padding: "10px",
-//     fontSize: "1rem",
-//     cursor: "pointer",
-//     backgroundColor: "#4CAF50",
-//     color: "white",
-//     border: "none",
-//     borderRadius: "5px",
-//   },
-//   editButton: {
-//     padding: "5px 10px",
-//     fontSize: "0.9rem",
-//     cursor: "pointer",
-//     backgroundColor: "#2196F3",
-//     color: "white",
-//     border: "none",
-//     borderRadius: "5px",
-//     marginRight: "5px",
-//   },
-//   deleteButton: {
-//     padding: "5px 10px",
-//     fontSize: "0.9rem",
-//     cursor: "pointer",
-//     backgroundColor: "#F44336",
-//     color: "white",
-//     border: "none",
-//     borderRadius: "5px",
-//   },
-// };
+const handleGoBack = () => {
+  navigate("/dashboard"); // Assuming /dashboard is your dashboard route
+};
+
+  return (
+    <div className="view-portfolio-container">
+      <h2 className="view-portfolio-heading">📊 My Portfolio</h2>
+
+      {loading && <p>Loading portfolio...</p>}
+      {error && <p className="view-portfolio-error">{error}</p>}
+
+      {!loading && portfolio.length === 0 && (
+        <p className="view-portfolio-no-data">No assets found. Add some!</p>
+      )}
+
+      <div className="view-portfolio-table-container">
+        <table className="view-portfolio-table">
+          <thead>
+            <tr>
+              <th>Asset Type</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Buy Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {portfolio.length > 0 ? (
+              portfolio.map((asset) => {
+                const { quantity, buyPrice } = formatFixedDeposit(asset);
+                return (
+                  <tr key={asset._id}>
+                    <td>{formatAssetName(asset.assetType)}</td>
+                    <td>{asset.name}</td>
+                    <td>{quantity}</td>
+                    <td>{buyPrice}</td>
+                    <td>
+                      <button
+                        onClick={() => navigate(`/update-asset/${asset._id}`)}
+                        className="view-portfolio-edit-button"
+                      >
+                        ✏️ Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(asset._id)}
+                        className="view-portfolio-delete-button"
+                      >
+                        🗑️ Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan="5" className="view-portfolio-no-data">
+                  No assets found. Add some!
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <button
+        onClick={() => navigate("/add-asset")}
+        className="view-portfolio-add-button"
+      >
+        ➕ Add New Asset
+      </button>
+
+      <button type="button" onClick={handleGoBack} className="button go-back">⬅️ Go Back</button>
+    </div>
+  );
+};
 
 export default ViewPortfolio;

@@ -13,22 +13,27 @@ const TrackNetWorth = () => {
         const token = localStorage.getItem("token");
         if (!token) {
           setError("User not authenticated!");
+          console.log("No token found");
           return;
         }
-
+    
+        console.log("Sending request with token:", token);  // Log the token being sent
         const response = await axios.get("http://localhost:5000/api/portfolio/summary", {
           headers: { Authorization: `Bearer ${token}` },
         });
-
+    
+        console.log("Response received:", response); // Log the full response
+    
         setNetWorth(response.data.totalNetWorth);
         setAssets(response.data); // Store all asset details
-
       } catch (err) {
         setError("Failed to fetch net worth data!");
+        console.error("Error during request:", err);  // Log the error
       } finally {
         setLoading(false);
       }
     };
+    
 
     fetchNetWorth();
   }, []);

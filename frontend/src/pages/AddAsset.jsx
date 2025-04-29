@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./AddAsset.css"
+import "./AddAsset.css";
 
 const AddAsset = () => {
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ const AddAsset = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Reset FD fields if assetType is changed
     if (name === "assetType" && value !== "fixed_deposit") {
       setFormData({
         ...formData,
@@ -63,13 +62,28 @@ const AddAsset = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
+      alert("✅ Asset added Successfully");
       console.log("✅ Asset added:", response.data);
-      navigate("/dashboard");
+
+      // 🧹 Clear the form after successful submission
+      setFormData({
+        assetType: "",
+        name: "",
+        quantity: "",
+        buyPrice: "",
+        principalAmount: "",
+        interestRate: "",
+        durationInYears: "",
+        startDate: "",
+      });
     } catch (error) {
       setError(error.response?.data?.message || "Failed to add asset!");
       console.error("❌ Error:", error.response?.data || error);
     }
+  };
+
+  const handleGoBack = () => {
+    navigate("/dashboard"); // Assuming /dashboard is your dashboard route
   };
 
   return (
@@ -79,7 +93,7 @@ const AddAsset = () => {
 
       <form onSubmit={handleSubmit} className="form">
         <label>Asset Type:</label>
-        <select name="assetType" onChange={handleChange} required className="select">
+        <select name="assetType" value={formData.assetType} onChange={handleChange} required className="select">
           <option value="">Select</option>
           <option value="crypto">Crypto</option>
           <option value="stock">Stock</option>
@@ -89,76 +103,39 @@ const AddAsset = () => {
         </select>
 
         <label>Asset Name:</label>
-        <input type="text" name="name" onChange={handleChange} required className="input" />
+        <input type="text" name="name" value={formData.name} onChange={handleChange} required className="input" />
 
         {formData.assetType !== "fixed_deposit" && (
           <>
             <label>Quantity:</label>
-            <input type="number" name="quantity" onChange={handleChange} className="input" />
+            <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} className="input" />
 
             <label>Buy Price:</label>
-            <input type="number" name="buyPrice" onChange={handleChange} className="input" />
+            <input type="number" name="buyPrice" value={formData.buyPrice} onChange={handleChange} className="input" />
           </>
         )}
 
         {formData.assetType === "fixed_deposit" && (
           <>
             <label>Principal Amount:</label>
-            <input type="number" name="principalAmount" onChange={handleChange} className="input" required />
+            <input type="number" name="principalAmount" value={formData.principalAmount} onChange={handleChange} className="input" required />
 
             <label>Interest Rate (%):</label>
-            <input type="number" name="interestRate" onChange={handleChange} className="input" required />
+            <input type="number" name="interestRate" value={formData.interestRate} onChange={handleChange} className="input" required />
 
             <label>Duration (Years):</label>
-            <input type="number" name="durationInYears" onChange={handleChange} className="input" required />
+            <input type="number" name="durationInYears" value={formData.durationInYears} onChange={handleChange} className="input" required />
 
             <label>Start Date:</label>
-            <input type="date" name="startDate" onChange={handleChange} className="input" required />
+            <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} className="input" required />
           </>
         )}
 
         <button type="submit" className="button">Add Asset</button>
+        <button type="button" onClick={handleGoBack} className="button go-back">⬅️ Go Back</button>
       </form>
     </div>
   );
 };
-
-// const styles = {
-//   container: {
-//     maxWidth: "500px",
-//     margin: "auto",
-//     padding: "20px",
-//     textAlign: "center",
-//   },
-//   heading: {
-//     fontSize: "1.8rem",
-//     marginBottom: "20px",
-//   },
-//   error: {
-//     color: "red",
-//     fontSize: "0.9rem",
-//   },
-//   form: {
-//     display: "flex",
-//     flexDirection: "column",
-//     gap: "10px",
-//   },
-//   input: {
-//     padding: "8px",
-//     fontSize: "1rem",
-//     borderRadius: "5px",
-//     border: "1px solid #ccc",
-//   },
-//   button: {
-//     marginTop: "10px",
-//     padding: "10px",
-//     fontSize: "1rem",
-//     cursor: "pointer",
-//     backgroundColor: "#4CAF50",
-//     color: "white",
-//     border: "none",
-//     borderRadius: "5px",
-//   },
-// };
 
 export default AddAsset;

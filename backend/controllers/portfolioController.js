@@ -109,6 +109,7 @@ const getPortfolio = async (req, res) => {
 
 // getAsset
 const getAsset = async (req, res) => {
+  console.log("hello");
   try {
     const { id } = req.params; // Extract the asset ID from the request parameters
 
@@ -124,6 +125,11 @@ const getAsset = async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized access' });
     }
 
+    // If it's a Fixed Deposit, ensure that the principalAmount is included in the response
+    if (asset.assetType === 'fixed_deposit') {
+      asset.principalAmount = asset.principalAmount || "Not Available"; // Add the principalAmount field
+    }
+
     // Return the asset details as a response
     res.json(asset);
   } catch (error) {
@@ -131,6 +137,8 @@ const getAsset = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
 
 // Update Asset
 const updateAsset = async (req, res) => {
@@ -190,6 +198,7 @@ const validateAddAsset = [
 // Portfolio Summary
 
 const getPortfolioSummary = async (req, res) => {
+  console.log("inside getportfolio summary");
   try {
     console.log("Fetching portfolio summary for user:", req.user.id);
     
