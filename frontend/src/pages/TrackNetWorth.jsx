@@ -16,6 +16,14 @@ const TrackNetWorth = () => {
           console.log("No token found");
           return;
         }
+
+        console.log("🔄 Triggering price update...");
+        await axios.get(
+          "http://localhost:5000/api/portfolio",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
     
         console.log("Sending request with token:", token);  // Log the token being sent
         const response = await axios.get("http://localhost:5000/api/portfolio/summary", {
