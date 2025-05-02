@@ -52,7 +52,10 @@ const Register = () => {
       <label>Password:</label>
       <input type="password" name="password" onChange={handleChange} required />
     </div>
-      <button type="submit">Register</button>
+    <div style={{ textAlign: "center" }}>
+  <button type="submit">Register</button>
+</div>
+
     </form>
   </div>
 </div>
