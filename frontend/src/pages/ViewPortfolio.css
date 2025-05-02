@@ -14,7 +14,7 @@ html, body {
     max-width: 900px;
     margin: 40px auto;
     padding: 80px 20px 20px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     overflow: visible;
@@ -28,9 +28,26 @@ html, body {
     padding-top: 20px;
     position: sticky;
     top: 0;
-    background: #ffffff;
     z-index: 10;
 }
+
+/* Hide scrollbar but allow scrolling */
+
+/* Chrome, Safari and Opera */
+.view-portfolio-table-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Firefox */
+  .view-portfolio-table-container {
+    scrollbar-width: none;
+  }
+  
+  /* IE and Edge */
+  .view-portfolio-table-container {
+    -ms-overflow-style: none;
+  }
+  
 
 /* Spinner */
 .view-portfolio-spinner {
@@ -318,3 +335,11 @@ html, body {
         padding: 8px;
     }
 }
+
+@media (max-width: 600px) {
+    .view-portfolio-container {
+      margin-left: 46vw; /* Pushes it towards the right */
+      margin-right: 5vw;  /* Optional: reduce right margin if needed */
+    }
+  }
+  
