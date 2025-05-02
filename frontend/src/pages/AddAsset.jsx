@@ -87,7 +87,8 @@ const AddAsset = () => {
   };
 
   return (
-    <div className="container">
+    <div className="parent-container">
+      <div className="container">
       <h2 className="heading">➕ Add Asset</h2>
       {error && <p className="error">{error}</p>}
 
@@ -135,6 +136,8 @@ const AddAsset = () => {
         <button type="button" onClick={handleGoBack} className="button go-back">⬅️ Go Back</button>
       </form>
     </div>
+    </div>
+    
   );
 };
 

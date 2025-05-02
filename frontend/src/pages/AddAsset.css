@@ -1,92 +1,112 @@
-/* AddAsset.css */
+/* Apply background to the entire body */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url("/pexels-karolina-grabowska-5980886.jpg"); /* Replace with your image path */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-/* Center the container */
+/* Dark Overlay with Reduced Opacity */
+.parent-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* 40% dark overlay */
+  z-index: 1;
+}
+
+/* Form Container */
 .container {
-    max-width: 400px;
-    margin: 50px auto; /* Center horizontally */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    text-align: center;
-    font-family: Arial, sans-serif;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  
-  /* Heading */
-  .heading {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #333;
-  }
-  
-  /* Error Message */
-  .error {
-    color: red;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
-  
-  /* Form Styling */
-  .form {
-    color: #000;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  /* Input Fields */
-  .input, .select {
-    background-color: gainsboro;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    outline: none;
-    transition: border 0.3s;
-    color: #000;
-  }
+  position: relative;
+  z-index: 2; /* Makes sure form stays above the background overlay */
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for the form */
+  text-align: center;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: flex-start; /* Align content to the start */
+  align-items: center;
+  min-height: 50%; /* Ensure container has a min-height */
+  overflow-y: auto; /* Ensure content inside the container scrolls if necessary */
+  max-height: 90vh; /* Make sure it doesn't exceed 90% of the viewport height */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer and Edge */
+}
 
-    .input.input{
-      background-color: gainsboro;
-      color: #000;
-    }
+/* Hide scrollbar for Webkit browsers */
+.container::-webkit-scrollbar {
+  display: none;
+}
 
-    .input.input:focus {
-      background-color: gainsboro; /* force it to stay gainsboro */
-      color: #000;
-    }
+/* Heading */
+.heading {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
 
-    .input.input:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0px 1000px gainsboro inset;
-      -webkit-text-fill-color: #000 !important; /* <-- this line fixes the text color */
-      background-color: gainsboro !important;
-      color: #000 !important;
-    }
-    
-  
-  .input:focus, .select:focus {
-    border-color: #007bff;
-  }
-  
-  /* Button */
-  .button {
-    margin-top: 15px;
-    padding: 12px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .button:hover {
-    background-color: #0056b3;
-  }
-  
+/* Error Message */
+.error {
+  color: red;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Form Styling */
+.form {
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%; /* Make the form fill the container width */
+}
+
+/* Input Fields */
+.input, .select {
+  background-color: gainsboro;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.3s;
+  color: #000;
+}
+
+/* Input Field Focus */
+.input:focus, .select:focus {
+  border-color: #007bff;
+}
+
+/* Button Styling */
+.button {
+  margin-top: 15px;
+  padding: 12px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
