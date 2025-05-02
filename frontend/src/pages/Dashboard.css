@@ -1,5 +1,6 @@
 /* Dashboard container */
 .dashboard-container {
+    position: relative;
     color: #000;
     display: flex;
     flex-direction: column;
@@ -7,30 +8,56 @@
     justify-content: center;
     height: 100vh;
     width: 100vw;
-    background-color: #f4f4f4; /* Light background */
+    background-image: url("/pexels-energepic-com-27411-159888.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
     font-family: Arial, sans-serif;
-    padding: 20px; /* Adds some spacing on smaller screens */
-}
-
-/* Dashboard heading */
-.dashboard-heading {
+    padding: 20px;
+    z-index: 0;
+  }
+  
+  /* 🔲 Dark overlay */
+  .dashboard-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* 40% dark overlay */
+    z-index: 1;
+  }
+  
+  /* Ensure content is above the overlay */
+  .dashboard-heading,
+  .card-container,
+  .logout-button {
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* Dashboard heading */
+  .dashboard-heading {
+    color: white;
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 20px;
     text-align: center;
-}
-
-/* Card container */
-.card-container {
+  }
+  
+  /* Card container */
+  .card-container {
     display: flex;
     gap: 20px;
     margin-bottom: 30px;
-    flex-wrap: wrap; /* Makes cards wrap on smaller screens */
-    justify-content: center; /* Centers cards in a row */
-}
-
-/* Individual card */
-.card {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  /* Individual card */
+  .card {
     background: white;
     padding: 20px;
     width: 200px;
@@ -40,16 +67,16 @@
     font-weight: bold;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid #ddd;
-}
-
-/* Hover effect */
-.card:hover {
+  }
+  
+  /* Hover effect */
+  .card:hover {
     transform: scale(1.05);
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Logout button */
-.logout-button {
+  }
+  
+  /* Logout button */
+  .logout-button {
     background-color: #ff4d4d;
     color: white;
     border: none;
@@ -58,34 +85,39 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease;
-    width: 80%; /* Adjusts button width for mobile */
-    max-width: 300px; /* Keeps it from getting too wide */
+    width: 80%;
+    max-width: 300px;
     text-align: center;
-}
-
-/* Hover effect for logout button */
-.logout-button:hover {
+  }
+  
+  /* Hover effect for logout button */
+  .logout-button:hover {
     background-color: #d43f3f;
-}
-
-/* ✅ Media Queries for Responsive Design */
-@media (max-width: 768px) {
+  }
+  
+  /* ✅ Media Queries for Responsive Design */
+  @media (max-width: 768px) {
     .dashboard-heading {
-        font-size: 1.5rem;
+      font-size: 1.5rem;
     }
-
+  
     .card-container {
-        flex-direction: column; /* Stack cards vertically on mobile */
-        align-items: center;
+      flex-direction: column;
+      align-items: center;
     }
-
+  
     .card {
-        width: 100%; /* Full width on small screens */
-        max-width: 300px; /* Prevents cards from getting too wide */
+      width: 100%;
+      max-width: 300px;
     }
-
+  
     .logout-button {
-        width: 100%; /* Full width button on mobile */
-        max-width: 300px;
+      width: 50%;
+      max-width: 300px;
+      padding: 10px 16px; /* Reduced padding */
+      font-size: 0.9rem;   /* Smaller text size */
+      margin-left: 55px;
     }
-}
+  }
+  
+  
