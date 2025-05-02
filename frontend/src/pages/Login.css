@@ -1,24 +1,39 @@
-/* Ensure the container takes full width and height */
 .login-container {
-    display: flex;
-    justify-content: center;  /* Center horizontally */
-    align-items: center;      /* Center vertically */
-    height: 100vh;
-    width: 100vw; /* Make sure it spans the full viewport width */
-    background-color: #f4f4f4; /* Light grey background */
-  }
-  
-  /* Keep the login card centered */
-  .login-card {
-    color: #000;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    text-align: center;
-  }
-  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-image: url("/pexels-davidmcbee-730547.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden; /* Ensures overlay stays within bounds */
+}
+
+.login-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Dark overlay with 40% opacity */
+  z-index: 1; /* Ensures it stays behind the content */
+}
+
+.login-card {
+  position: relative;
+  z-index: 2; /* Ensure it's above the overlay */
+  color: #000;
+  text-align: center;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background for the form */
+  border-radius: 10px;
+  width: 350px;
+}
+
   
   /* Header */
   .login-card h2 {
@@ -57,10 +72,10 @@
   
   /* Button styling */
   .login-button {
-    width: 100%;
+    width: 40%;
     padding: 10px;
     border: none;
-    background-color: #007bff;
+    background-color: #1a1a1a;
     color: white;
     font-size: 16px;
     border-radius: 5px;
@@ -69,6 +84,6 @@
   }
   
   .login-button:hover {
-    background-color: #0056b3;
+    background-color: #03926c;
   }
   
